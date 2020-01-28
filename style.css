@@ -1,0 +1,17 @@
+#root {
+  height: 100%;
+  display: flex;
+}
+
+#root .MuiCard-root {
+  min-width: 60vw;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  overflow: visible;
+}
+
+.time-select {
+  border: 1px solid #b2b2b2;
+  padding: 12px;
+  margin-right: 14px;
+}
