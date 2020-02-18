@@ -7,7 +7,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import {
   KeyboardDatePicker,
-  MuiPickersUtilsProvider
+  MuiPickersUtilsProvider,
+  TimePicker
 } from "@material-ui/pickers";
 import moment from "moment";
 import MomentUtils from "@date-io/moment";
@@ -90,8 +91,32 @@ const App = () => {
     return num.toString();
   };
 
-  //console.log(`toString() => ${date.toString()}`);
-  //console.log(`toISOString() => ${date.toISOString()}`);
+  // helper function
+  const timeInMinutes = time => {
+    const t = moment(time);
+
+    // calculate time in minutes
+    const minutes = t.hours() * 60 + t.minutes();
+    return minutes;
+  };
+
+  const [pickerStartTime, handlePickerStartTime] = useState(
+    moment({ minute: 0 })
+  );
+  const [pickerEndTime, handlePickerEndTime] = useState(moment({ minute: 10 }));
+
+  const handleUpdateStart = time => {
+    handlePickerStartTime(time);
+    const mins = timeInMinutes(time);
+    setStartTime(mins);
+    updateStartTime(date, mins);
+  };
+  const handleUpdateEnd = time => {
+    handlePickerEndTime(time);
+    const mins = timeInMinutes(time);
+    setEndTime(mins);
+    updateEndTime(date, mins);
+  };
 
   return (
     <Grid
@@ -111,6 +136,29 @@ const App = () => {
             onChange={date => handleDateChange(date)}
             format="MM/DD/YY"
           />
+        </MuiPickersUtilsProvider>
+
+        <h3>MUI Time Pickers</h3>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <Grid container direction="row" alignItems="center">
+            <div className="time-select">
+              <TimePicker
+                variant="inline"
+                label="Start Time"
+                value={pickerStartTime}
+                onChange={time => handleUpdateStart(time)}
+              />
+            </div>
+
+            <div className="time-select">
+              <TimePicker
+                variant="inline"
+                label="End Time"
+                value={pickerEndTime}
+                onChange={time => handleUpdateEnd(time)}
+              />
+            </div>
+          </Grid>
         </MuiPickersUtilsProvider>
 
         <h3>Time Pickers</h3>
